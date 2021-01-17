@@ -1,7 +1,6 @@
 ﻿using System;
 using Autofac;
 using Data.Models;
-using Data.ViewModels;
 using Data.VM;
 using FluentValidation;
 using Services.Interfaces;
