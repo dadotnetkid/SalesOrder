@@ -1,0 +1,54 @@
+﻿@model Data.VM.LoginViewModel
+@{
+    Layout = "~/views/shared/_loginlayout.cshtml";
+}
+<form class="form" method="post" action="@Url.Action("Login")">
+
+    <div class="card card-login">
+
+        <div class="card-header ">
+            <div class="logo-container">
+                <img src="../../assets/img/now-logo.png" alt="">
+            </div>
+        </div>
+
+        <div class="card-body ">
+            <p class="text-center login-msg">Login to start you session</p>
+            <div class="input-group no-border form-control-lg">
+                <div class="input-group-prepend">
+                    <div class="input-group-text">
+                        <i class="now-ui-icons users_circle-08"></i>
+                    </div>
+                </div>
+                <input type="text" class="form-control" asp-for="UserName" placeholder="Username">
+            </div>
+            <span asp-validation-for="UserName" class="text-danger"></span>
+
+            <div class="input-group no-border form-control-lg">
+                <div class="input-group-prepend">
+                    <div class="input-group-text">
+                        <i class="now-ui-icons text_caps-small"></i>
+                    </div>
+                </div>
+                <input type="password" asp-for="Password" placeholder="Passowrd" class="form-control">
+            </div>
+            <span asp-validation-for="Password" class="text-danger"></span>
+
+
+        </div>
+
+        <div class="card-footer ">
+            <button type="submit"  class="btn btn-primary btn-round btn-lg btn-block mb-3">Login</button>
+            <div class="pull-left">
+                <h6><a asp-action="Register" class="link footer-link">Create Account</a></h6>
+            </div>
+
+            <div class="pull-right">
+            </div>
+        </div>
+
+    </div>
+
+
+
+</form>

@@ -1,0 +1,52 @@
+﻿@model SalesOrders
+<div class="row">
+    <div class="col-lg-12">
+        <div class="card">
+            <div class="card-header">
+                Order # @Model?.OrderNumber
+            </div>
+            <div class="card-body">
+                @if (Model?.Status != "Tendered Transaction")
+                {
+                    <form action="@Url.Action("TenderTransaction", "SalesOrder", new {id = Model?.Id})">
+
+                        <div class="row">
+
+                            <div class="col-lg-3">
+                                <div class="row">
+                                    <div class="col-lg-12">
+                                        <label asp-for="CustomerName">CustomerName</label>
+                                        @await Component.InvokeAsync("CustomerCombobox", new {componentName = "CustomerName", salesOrders = Model})
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-12">
+                                        <label asp-for="CustomerName">Amount Tendered</label>
+                                        <input type="text" asp-for="AmountPaid" placeholder="Amount Tendered" class="form-control"/>
+                                        <span asp-validation-for="AmountPaid"></span>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="col-lg-9">
+                                <button class="btn btn-success" href="">Tender Transaction</button>
+                                <a class="btn btn-danger" href="@Url.Action("CancelTransaction", "SalesOrder", new {id = Model?.Id})">Cancel Transaction</a>
+                            </div>
+
+                        </div>
+                    </form>
+                }
+                
+                <div class="row">
+                    <div class="col-lg-12">
+                        <span asp-validation-for="SalesOrderDetails"></span>
+                        @await Component.InvokeAsync("SalesOrderDetailGrid", new {salesOrders = Model})
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="modal-container">
+
+</div>

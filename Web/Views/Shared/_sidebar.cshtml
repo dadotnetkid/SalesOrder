@@ -1,0 +1,39 @@
+﻿<div class="sidebar-wrapper" id="sidebar-wrapper">
+    <ul class="nav">
+      
+        <li class="active">
+            <a href="@Url.Action("Index","SalesOrder")">
+                <i class="now-ui-icons users_single-02"></i>
+                <p>Sales Order</p>
+            </a>
+        </li>
+        <li class="">
+            <a href="@Url.Action("Index","Reports")">
+                <i class="now-ui-icons users_single-02"></i>
+                <p>Reports</p>
+            </a>
+        </li>
+        @*@if (User.IsInRole("Administrator"))
+        {
+            <li>
+                <a data-toggle="collapse" href="#maintenance">
+                    <i class="now-ui-icons design_bullet-list-67"></i>
+                    <p>
+                        Maintenance <b class="caret"></b>
+                    </p>
+                </a>
+                <div class="collapse " id="maintenance">
+                    <ul class="nav">
+                        <li>
+                            <a href="@Url.Action("Users","Maintenance")">
+                                <span class="now-ui-icons users_single-02"></span> Users
+                            </a>
+                        </li>
+
+                    </ul>
+                </div>
+            </li>
+        }*@
+
+    </ul>
+</div>

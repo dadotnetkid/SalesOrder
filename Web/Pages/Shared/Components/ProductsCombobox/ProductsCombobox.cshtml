@@ -1,0 +1,17 @@
+﻿@model SalesOrderDetails
+
+<select class="form-control" asp-for="ProductName">
+    @foreach (var i in (List<Products>)ViewData["products"])
+    {
+
+        if (Model?.ProductName == i.ProductName)
+        {
+            <option value="@i.ProductName" selected>@i.ProductName</option>
+        }
+        else
+        {
+            <option value="@i.ProductName">@i.ProductName</option>
+        }
+
+    }
+</select>
