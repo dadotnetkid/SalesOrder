@@ -9,7 +9,7 @@ using Services.Interfaces;
 
 namespace Web.Controllers
 {
-
+    [Authorize]
     public class SalesOrderController : Controller
     {
         private ICustomerService customerService;
@@ -74,6 +74,7 @@ namespace Web.Controllers
             }
             return ViewComponent("AddEditAddSalesOrderDetailModalPartial", new { orderId = model.SalesOrderId, saledOrderDetailId = model.Id });
         }
+
         public IActionResult UpdateSalesOrderGridPartial(SalesOrderDetails model)
         {
             try
@@ -88,6 +89,13 @@ namespace Web.Controllers
                 throw;
             }
             return ViewComponent("AddEditAddSalesOrderDetailModalPartial", new { orderId = model.SalesOrderId, saledOrderDetailId = model.Id });
+        }
+
+        public IActionResult DeleteSalesOrderGridPartial(int? orderId, int? saledOrderDetailId)
+        {
+            salesOrderDetailService.Delete(x => x.Id == saledOrderDetailId);
+            return RedirectToAction("AddEditSalesOrderPartial",new{ orderId = orderId , methodType ="Edit"});
+            // AddEditSalesOrderPartial(int ? orderId, string methodType)
         }
         public IActionResult TenderTransaction(SalesOrders salesOrders)
         {

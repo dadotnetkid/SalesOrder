@@ -63,5 +63,21 @@ namespace Services
             db.SaveChanges();
             return model;
         }
+
+        public int Delete(Func<SalesOrderDetails, bool> filter = null)
+        {
+            try
+            {
+                db.SalesOrderDetails.Remove(db.SalesOrderDetails.FirstOrDefault(filter));
+                return db.SaveChanges();
+
+            }
+            catch (Exception e)
+            {
+
+            }
+
+            return 0;
+        }
     }
 }

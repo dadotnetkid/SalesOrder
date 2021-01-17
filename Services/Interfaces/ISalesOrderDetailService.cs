@@ -13,6 +13,7 @@ namespace Services.Interfaces
         public List<SalesOrderDetails> SalesOrderDetails(Func<SalesOrderDetails, bool> filter = null, string includeProperties = null);
         public SalesOrderDetails Insert(SalesOrderDetails model);
         public SalesOrderDetails Update(SalesOrderDetails model);
+        public int Delete(Func<SalesOrderDetails, bool> filter = null);
 
 
     }

@@ -87,5 +87,12 @@ namespace Web.Controllers
         {
             return View();
         }
+
+        public async Task<IActionResult> Logout()
+        {
+            await this.signInManager.SignOutAsync();
+            return RedirectToAction("Login");
+
+        }
     }
 }
