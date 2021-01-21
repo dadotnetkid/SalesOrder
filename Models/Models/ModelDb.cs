@@ -1,5 +1,4 @@
 ﻿using System;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 
@@ -23,7 +22,8 @@ namespace Data.Models
         public virtual DbSet<AspNetUserRoles> AspNetUserRoles { get; set; }
         public virtual DbSet<AspNetUserTokens> AspNetUserTokens { get; set; }
         public virtual DbSet<AspNetUsers> AspNetUsers { get; set; }
-        public virtual DbSet<AspNetUsers> Users { get; set; }
+        public virtual DbSet<ChequeInSalesOrder> ChequeInSalesOrder { get; set; }
+        public virtual DbSet<Cheques> Cheques { get; set; }
         public virtual DbSet<SalesOrderDetails> SalesOrderDetails { get; set; }
         public virtual DbSet<SalesOrders> SalesOrders { get; set; }
 
@@ -136,13 +136,57 @@ namespace Data.Models
                 entity.Property(e => e.UserName).HasMaxLength(256);
             });
 
+            modelBuilder.Entity<ChequeInSalesOrder>(entity =>
+            {
+                entity.HasKey(e => new { e.ChequeId, e.SalesOrderId });
+
+                entity.Property(e => e.ChequeId).HasMaxLength(128);
+
+                entity.Property(e => e.SalesOrderId).HasMaxLength(128);
+
+                entity.HasOne(d => d.Cheque)
+                    .WithMany(p => p.ChequeInSalesOrder)
+                    .HasForeignKey(d => d.ChequeId)
+                    .HasConstraintName("FK_ChequeInSalesOrder_Cheques");
+
+                entity.HasOne(d => d.SalesOrder)
+                    .WithMany(p => p.ChequeInSalesOrder)
+                    .HasForeignKey(d => d.SalesOrderId)
+                    .HasConstraintName("FK_ChequeInSalesOrder_SalesOrders");
+            });
+
+            modelBuilder.Entity<Cheques>(entity =>
+            {
+                entity.Property(e => e.Id).HasMaxLength(128);
+
+                entity.Property(e => e.AccountName).HasMaxLength(50);
+
+                entity.Property(e => e.AccountNumber).HasMaxLength(50);
+
+                entity.Property(e => e.Amount).HasColumnType("money");
+
+                entity.Property(e => e.BankAddress).HasMaxLength(50);
+
+                entity.Property(e => e.BankBranch).HasMaxLength(50);
+
+                entity.Property(e => e.BankName).HasMaxLength(50);
+
+                entity.Property(e => e.ChequeNumber).HasMaxLength(50);
+
+                entity.Property(e => e.Payee).HasMaxLength(50);
+            });
+
             modelBuilder.Entity<SalesOrderDetails>(entity =>
             {
+                entity.Property(e => e.Id).HasMaxLength(128);
+
                 entity.Property(e => e.ProductName).HasMaxLength(256);
 
                 entity.Property(e => e.PurchaseAmount).HasColumnType("money");
 
                 entity.Property(e => e.Qty).HasColumnType("money");
+
+                entity.Property(e => e.SalesOrderId).HasMaxLength(128);
 
                 entity.Property(e => e.SellingPrice).HasColumnType("money");
 
@@ -163,11 +207,19 @@ namespace Data.Models
 
             modelBuilder.Entity<SalesOrders>(entity =>
             {
+                entity.Property(e => e.Id).HasMaxLength(128);
+
+                entity.Property(e => e.AmountPaid).HasColumnType("money");
+
                 entity.Property(e => e.CreatedBy).HasMaxLength(450);
 
                 entity.Property(e => e.CustomerName).HasMaxLength(450);
 
                 entity.Property(e => e.OrderNumber).HasMaxLength(450);
+
+                entity.Property(e => e.PaymentMethod).HasMaxLength(50);
+
+                entity.Property(e => e.Status).HasMaxLength(50);
 
                 entity.HasOne(d => d.CreatedByNavigation)
                     .WithMany(p => p.SalesOrders)

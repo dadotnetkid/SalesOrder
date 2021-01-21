@@ -6,107 +6,103 @@ using System.Threading.Tasks;
 using Data.Models;
 using Microsoft.AspNetCore.Authorization;
 using Services.Interfaces;
+using Services.VM;
 
 namespace Web.Controllers
 {
-    [Authorize]
     public class SalesOrderController : Controller
     {
+        #region fields
         private ICustomerService customerService;
         private IProductService productService;
         private ISalesOrderService salesOrderService;
         private ISalesOrderDetailService salesOrderDetailService;
+        private IChequeService chequeService;
+        #endregion
 
-        public SalesOrderController(IProductService productService, ICustomerService customerService, ISalesOrderService salesOrderService,
-        ISalesOrderDetailService salesOrderDetailService
+        #region ctor
+        public SalesOrderController(IProductService productService,
+            ICustomerService customerService,
+            ISalesOrderService salesOrderService,
+            ISalesOrderDetailService salesOrderDetailService,
+            IChequeService chequeService
         )
         {
             this.productService = productService;
             this.customerService = customerService;
             this.salesOrderService = salesOrderService;
             this.salesOrderDetailService = salesOrderDetailService;
-
+            this.chequeService = chequeService;
         }
+
+
+        #endregion
         public IActionResult Index()
         {
             return View();
         }
-        /// <summary>
-        /// Render add edit form for the sales order Id
-        /// </summary>
-        /// <param name="orderId">order Id from salesordergrid</param>
-        /// <param name="methodType">Add/Edit</param>
-        /// <returns></returns>
-        public IActionResult AddEditSalesOrderPartial(int? orderId, string methodType)
+        public IActionResult SalesOrderDetailGridPartial(string salesOrderId)
         {
-            if (methodType == "Add")
+            if (salesOrderId == null)
             {
-                var salesOrder = salesOrderService.Initialize();
-                orderId = salesOrder.Id;
-                return RedirectToAction("AddEditSalesOrderPartial", new { orderId = orderId, methodType = "Edit" });
+                var res = salesOrderService.Initialize();
+                return RedirectToAction("SalesOrderDetailGridPartial", new { salesOrderId = res.Id });
             }
-
-
-            return View(salesOrderService.Find(x => x.Id == orderId));
+            var model = salesOrderService.Find(x => x.Id == salesOrderId);
+            return View(model);
         }
-        public IActionResult SalesOrderGridPartial()
+
+        public IActionResult AddEditSalesOrderDetailModalPartial(SalesOrderDetailVM model)
         {
-            return ViewComponent("SalesOrderGrid");
+            model.SalesOrderDetails = salesOrderDetailService.Find(x => x.Id == model?.SalesOrderDetailId);
+            return PartialView(model);
         }
 
-        public IActionResult AddEditAddSalesOrderDetailModalPartial(int? orderId, int? salesOrderDetailId)
-        {
-            return ViewComponent("AddEditAddSalesOrderDetailModalPartial", new { orderId = orderId, salesOrderDetailId = salesOrderDetailId });
-        }
-
-        public IActionResult AddSalesOrderGridPartial(SalesOrderDetails model)
-        {
-            try
-            {
-                if (!ModelState.IsValid)
-                    return ViewComponent("AddEditAddSalesOrderDetailModalPartial", new { salesOrderDetails = model, url = Url.Action("AddSalesOrderGridPartial") });
-                salesOrderDetailService.Insert(model);
-                ViewData["isSuccess"] = true;
-            }
-            catch (Exception e)
-            {
-
-            }
-            return ViewComponent("AddEditAddSalesOrderDetailModalPartial", new { orderId = model.SalesOrderId, saledOrderDetailId = model.Id });
-        }
-
-        public IActionResult UpdateSalesOrderGridPartial(SalesOrderDetails model)
-        {
-            try
-            {
-                if (!ModelState.IsValid)
-                    return ViewComponent("AddEditAddSalesOrderDetailModalPartial", new { salesOrderDetails = model, url = Url.Action("UpdateSalesOrderGridPartial") });
-                salesOrderDetailService.Update(model);
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e);
-                throw;
-            }
-            return ViewComponent("AddEditAddSalesOrderDetailModalPartial", new { orderId = model.SalesOrderId, saledOrderDetailId = model.Id });
-        }
-
-        public IActionResult DeleteSalesOrderGridPartial(int? orderId, int? saledOrderDetailId)
-        {
-            salesOrderDetailService.Delete(x => x.Id == saledOrderDetailId);
-            return RedirectToAction("AddEditSalesOrderPartial",new{ orderId = orderId , methodType ="Edit"});
-            // AddEditSalesOrderPartial(int ? orderId, string methodType)
-        }
-        public IActionResult TenderTransaction(SalesOrders salesOrders)
+        public IActionResult AddSalesOrderDetailPartial(SalesOrderDetailVM model)
         {
             if (!ModelState.IsValid)
-            {
-                return View("AddEditSalesOrderPartial", salesOrders);
-            }
-
-            salesOrderService.TenderTransaction(salesOrders);
-            return RedirectToAction("Index");
+                return PartialView("AddEditSalesOrderDetailModalPartial", model);
+            if (string.IsNullOrEmpty(model.SalesOrderDetails.Id))
+                salesOrderDetailService.Insert(model.SalesOrderDetails);
+            else
+                salesOrderDetailService.Update(model.SalesOrderDetails);
+            model.isSuccess = true;
+            return PartialView("AddEditSalesOrderDetailModalPartial", model);
         }
+        [HttpPost]
+        public IActionResult TenderTransactionModalPartial(string salesOrderId)
+        {
+            var model = new SalesOrderVM()
+            {
+                SalesOrder = salesOrderService.Find(x => x.Id == salesOrderId),
+                saleOrderId = salesOrderId
+            };
+
+
+            if (string.IsNullOrEmpty(model?.SalesOrder?.PaymentMethod))
+            {
+                model.SalesOrder.PaymentMethod = "Cash";
+            }
+            return PartialView(model);
+        }
+
+        public IActionResult TenderTransactionPartial(SalesOrderVM model)
+        {
+            model.Cheques = chequeService.Get();
+            if (!ModelState.IsValid)
+                return PartialView("TenderTransactionModalPartial", model);
+            salesOrderService.Update(model);
+            model.isSuccess = true;
+
+            return PartialView("TenderTransactionModalPartial", model);
+        }
+
+        public IActionResult DeleteSalesOrderGridPartial(string salesOrderId, string saledOrderDetailId)
+        {
+            salesOrderDetailService.Delete(x => x.Id == saledOrderDetailId);
+            return RedirectToAction("SalesOrderDetailGridPartial", new { salesOrderId = salesOrderId });
+        }
+
         public IActionResult CancelTransaction(int id)
         {
             salesOrderService.CancelTransaction(id);

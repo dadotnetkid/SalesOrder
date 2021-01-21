@@ -1,0 +1,31 @@
+﻿@model System.Collections.Generic.List<Data.Models.Cheques>
+
+<table class="table">
+    <thead>
+    <tr>
+        <th># <a href="#" onclick="showAdd()">new</a></th>
+        <th>Account Name</th>
+        <th>Account No.</th>
+        <th>Cheque Number</th>
+        <th>Cheque Date</th>
+        <th>Bank Name</th>
+        <th>Branch</th>
+        <th>Amount</th>
+    </tr>
+    </thead>
+    <tbody>
+    @foreach (var i in Model)
+    {
+        <tr>
+            <td><a href="#" onclick="showEdit('@i.Id')">Edit</a> <a href="#">Delete</a></td>
+            <td>@i.AccountName</td>
+            <td>@i.AccountNumber</td>
+            <td>@i.ChequeNumber</td>
+            <td>@i.ChequeDate?.ToShortDateString()</td>
+            <td>@i.BankName</td>
+            <td>@i.BankBranch</td>
+            <td>@i.Amount?.ToString("n2")</td>
+        </tr>
+    }
+    </tbody>
+</table>

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Data.Models;
-using Data.VM;
+using Services.VM;
 
 namespace Web.Controllers
 {

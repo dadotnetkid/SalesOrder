@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Data.Models;
 using Microsoft.AspNetCore.Mvc;
 using Services.Interfaces;
+using Services.VM;
 
 namespace Web.Pages
 {
@@ -18,8 +19,8 @@ namespace Web.Pages
         }
         public async Task<IViewComponentResult> InvokeAsync()
         {
-
-            return await Task.FromResult(View("SalesOrderGrid", salesOrderService.Orders()));
+           var salesOrder= salesOrderService.Orders();
+            return await Task.FromResult(View("~/views/SalesOrder/SalesOrderGrid.cshtml", salesOrder));
         }
     }
 }

@@ -1,0 +1,123 @@
+﻿@model SalesOrders
+
+<div class="row">
+    <div class="col-lg-12">
+        <div class="card">
+            <div class="card-body">
+                @if (Model.Status == "Tendered Transaction")
+                {
+
+                }
+                else
+                {
+                    <button class="btn btn-success" onclick="tenderTransaction('@Model?.Id')">Tender Transaction</button>
+                    <button class="btn btn-danger" onclick="cancelTransaction('@Model?.Id')">Cancel Transaction</button>
+                }
+                <div class="row">
+                    <div class="col-lg-12">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    @if (Model?.Status != "Tendered Transaction")
+                                    {
+                                        <th># <a href="#" onclick="showAddModal('@Model?.Id')">New</a></th>
+                                    }
+
+                                    <th>Order # </th>
+                                    <th>Product Name</th>
+                                    <th>QTY</th>
+                                    <th>Total</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var i in Model?.SalesOrderDetails)
+                                {
+                                    <tr>
+                                        @if (i.SalesOrder.Status != "Tendered Transaction")
+                                        {
+                                            <td>
+
+                                                <a href="#" onclick="showEditModal('@i.SalesOrderId', '@i.Id')">Edit</a>
+                                                <a href="@Url.Action("DeleteSalesOrderGridPartial", "SalesOrder", new {orderId = i.SalesOrderId, saledOrderDetailId = i.Id})">Delete</a>
+
+
+                                            </td>
+                                        }
+                                        <td>@i.Sku</td>
+                                        <td>@i.ProductName</td>
+                                        <td>@i.Qty?.ToString("n2")</td>
+                                        <td>@i.SubTotal?.ToString("n2")</td>
+                                    </tr>
+                                }
+                            </tbody>
+                            <tfoot>
+                                <tr>
+                                    <th colspan="4" class="text-right">Total</th>
+                                    <th>@Model.SalesOrderDetails.Sum(x => x.SubTotal)?.ToString("n2")</th>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<div id="add-edit-order-detail-modal"></div>
+<script>
+
+
+    function showAddModal(salesOrderId)
+    {
+        $.ajax({
+            url: '@Url.Action("AddEditSalesOrderDetailModalPartial")',
+            data: { SalesOrderId: salesOrderId },
+            method: 'POST',
+            success: function(html) {
+                $('.e-dlg-container').remove();
+                $('#add-edit-order-detail-modal').html(html);
+            }
+
+        })
+    }
+    function showEditModal(salesOrderId,salesOrderdetailId)
+    {
+        $.ajax({
+            url: '@Url.Action("AddEditSalesOrderDetailModalPartial")',
+            data: { SalesOrderId: salesOrderId, SalesOrderDetailId : salesOrderdetailId },
+            method: 'POST',
+            success: function(html) {
+                $('.e-dlg-container').remove();
+                $('#add-edit-order-detail-modal').html(html);
+            }
+
+        })
+    }
+
+    onSuccess = function(html) {
+        $('.e-dlg-container').remove();
+        $('#add-edit-order-detail-modal').html(html);
+    }
+
+    function tenderTransaction(salesOrderId) {
+        $.ajax({
+            url: '@Url.Action("TenderTransactionModalPartial")',
+            data: { salesOrderId: salesOrderId},
+            method: 'POST',
+            success: function(html) {
+                $('#tender-transaction-modal').remove();
+                $('#add-edit-order-detail-modal').html(html);
+            }
+
+        })
+    }
+
+    onSuccessTenderTransaction = function (html) {
+        $('#tender-transaction-modal').remove();
+        $('#add-edit-order-detail-modal').html(html);
+    }
+</script>

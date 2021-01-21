@@ -1,13 +1,19 @@
 ﻿<div class="sidebar-wrapper" id="sidebar-wrapper">
     <ul class="nav">
       
-        <li class="active">
+        <li class="@ViewContext.IsMenuActive("Index","SalesOrder")">
             <a href="@Url.Action("Index","SalesOrder")">
                 <i class="now-ui-icons users_single-02"></i>
                 <p>Sales Order</p>
             </a>
         </li>
-        <li class="">
+        <li class="@ViewContext.IsMenuActive("Index","Cheques")">
+            <a href="@Url.Action("Index","Cheques")">
+                <i class="now-ui-icons users_single-02"></i>
+                <p>Cheques</p>
+            </a>
+        </li>
+        <li class="@ViewContext.IsMenuActive("Index","Reports")">
             <a href="@Url.Action("Index","Reports")">
                 <i class="now-ui-icons users_single-02"></i>
                 <p>Reports</p>

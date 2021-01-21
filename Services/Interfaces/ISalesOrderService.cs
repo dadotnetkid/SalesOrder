@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using Data.Models;
+using Services.VM;
 
 namespace Services.Interfaces
 {
@@ -11,7 +12,8 @@ namespace Services.Interfaces
         public List<SalesOrders> Orders(Func<SalesOrders, bool> filter = null);
         public SalesOrders Insert(SalesOrders salesOrders);
         public SalesOrders Update(SalesOrders salesOrders);
-        public int Delete(int? salesOrder);
+        public SalesOrders Update(SalesOrderVM vm) ;
+        public int Delete(string salesOrder);
         public SalesOrders Initialize();
         public void TenderTransaction(int? saleOrderId);
         public void TenderTransaction(SalesOrders salesOrders);

@@ -5,6 +5,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Validators\obj\**" />
+    <EmbeddedResource Remove="Validators\obj\**" />
+    <None Remove="Validators\obj\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Autofac" Version="6.1.0" />
     <PackageReference Include="FluentValidation.AspNetCore" Version="9.4.0" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Core" Version="2.2.5" />
@@ -13,7 +19,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Models\Data.csproj" />
-    <ProjectReference Include="..\Validator\Validator.csproj" />
   </ItemGroup>
 
 </Project>

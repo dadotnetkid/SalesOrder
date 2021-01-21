@@ -1,14 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 
 namespace Data.Models
 {
     public partial class SalesOrderDetails
     {
-        [Key]
-        public int Id { get; set; }
-        public int? SalesOrderId { get; set; }
+        public string Id { get; set; }
+        public string SalesOrderId { get; set; }
         public string Sku { get; set; }
         public string ProductName { get; set; }
         public decimal? PurchaseAmount { get; set; }

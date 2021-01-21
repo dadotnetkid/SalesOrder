@@ -8,6 +8,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System;
+using Syncfusion.Licensing;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -17,7 +18,7 @@ using Data;
 using Data.Models;
 using FluentValidation.AspNetCore;
 using Services;
-using Validator;
+using Services.VM;
 
 namespace Web
 {
@@ -25,7 +26,8 @@ namespace Web
     {
         public Startup(IConfiguration configuration)
         {
-            Configuration = configuration;
+SyncfusionLicenseProvider.RegisterLicense("MDAxQDMxMzgyZTM0MmUzMGdVTXdwditJbDRRYjQ0QXpRL2xXOTFpZk0zcWxVeTUySW5Fc0g4MDlQbWM9");
+Configuration = configuration;
         }
 
         public IConfiguration Configuration { get; }

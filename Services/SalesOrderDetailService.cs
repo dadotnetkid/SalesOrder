@@ -43,7 +43,7 @@ namespace Services
             model.Sku = product.SKU;
             model.PurchaseAmount = product.PurchaseAmount;
             model.SellingPrice = product.SellingAmount;
-
+            model.Id = Guid.NewGuid().ToString();
             db.SalesOrderDetails.Add(model);
             db.SaveChanges();
             return model;

@@ -88,3 +88,10 @@ body {
     -ms-border-radius: 20px;
     border-radius: 20px;
 }
+.field-validation-error {
+    color:red;
+    font-weight:bolder;
+}
+.btn-onside-fab {
+    margin: 0px !important;
+}

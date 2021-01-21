@@ -1,0 +1,95 @@
+﻿@model Cheques
+@{
+    var header = Model?.AccountName ?? "New Cheque";
+
+}
+
+<ejs-dialog id="AddEditChequeDialog" width="700px" created="AddEditChequeDialogCreated" allowDragging="true" showCloseIcon="true" header="@header" close="onclose">
+
+    <e-content-template>
+        <form method="post"
+              data-ajax="true" data-ajax-method="post"
+              data-ajax-url="@Url.Action("SaveChequePartial",new { id=Model?.Id})"
+              data-ajax-success="onSuccessSaveCheque">
+            <div class="row">
+                <div class="col-lg-6">
+                    <label asp-for="AccountName">Account Name</label>
+                    <ejs-textbox id="AccountName" ejs-for="AccountName" placeholder="Account Name"></ejs-textbox>
+                    <span asp-validation-for="AccountName"></span>
+                </div>
+
+                <div class="col-lg-6">
+                    <label asp-for="AccountNumber">Account Number</label>
+                    <ejs-textbox id="AccountNumber" ejs-for="AccountNumber" placeholder="Account No."></ejs-textbox>
+                    <span asp-validation-for="AccountNumber"></span>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-6">
+                    <label asp-for="Payee">Payee Name</label>
+                    <ejs-textbox id="Payee" ejs-for="Payee" placeholder="Payee"></ejs-textbox>
+                    <span asp-validation-for="Payee"></span>
+                </div>
+
+                <div class="col-lg-6">
+                    <label asp-for="Amount">Amount</label>
+                    <ejs-numerictextbox id="Amount" ejs-for="Amount" placeholder="Amount"></ejs-numerictextbox>
+                    <span asp-validation-for="Amount"></span>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-6">
+                    <label asp-for="ChequeDate">Cheque Date</label>
+                    <ejs-datetimepicker id="dtpicker" ejs-for="ChequeDate" placeholder="Cheque Date"></ejs-datetimepicker>
+                    <span asp-validation-for="ChequeDate"></span>
+                </div>
+
+                <div class="col-lg-6">
+                    <label asp-for="ChequeNumber">Cheque No.</label>
+                    <ejs-numerictextbox id="ChequeNumber" ejs-for="ChequeNumber" placeholder="Cheque No"></ejs-numerictextbox>
+                    <span asp-validation-for="ChequeNumber"></span>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-4">
+                    <label asp-for="BankName">Bank Name</label>
+                    <ejs-textbox id="BankName" ejs-for="BankName" placeholder="Bank Name"></ejs-textbox>
+                    <span asp-validation-for="BankName"></span>
+                </div>
+                <div class="col-lg-4">
+                    <label asp-for="BankBranch">Bank Branch</label>
+                    <ejs-textbox id="BankBranch" ejs-for="BankBranch" placeholder="Bank Branch"></ejs-textbox>
+                    <span asp-validation-for="BankBranch"></span>
+
+                </div>
+                <div class="col-lg-4">
+                    <label asp-for="BankAddress">Bank Address</label>
+                    <ejs-textbox id="BankAddress" ejs-for="BankAddress" placeholder="Bank Address"></ejs-textbox>
+                    <span asp-validation-for="BankAddress"></span>
+                </div>
+
+
+            </div>
+            <button type="submit" class="btn btn-success">Save</button>
+
+        </form>
+    </e-content-template>
+</ejs-dialog>
+<script>
+    function AddEditChequeDialogCreated() {
+        this.show();
+    }
+
+    function onclose() {
+        $('#AddEditChequeDialog').remove();
+    }
+</script>
+@if(ViewData["isSuccess"]!=null)
+{
+    <script>
+        $(document).ready(function() {
+            $('#AddEditChequeDialog').remove();
+        });
+    </script>
+}
+<ejs-scripts></ejs-scripts>

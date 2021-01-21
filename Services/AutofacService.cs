@@ -1,10 +1,10 @@
 ﻿using System;
 using Autofac;
 using Data.Models;
-using Data.VM;
 using FluentValidation;
 using Services.Interfaces;
-using Validator;
+using Services.Validators;
+using Services.VM;
 
 namespace Services
 {
@@ -18,8 +18,11 @@ namespace Services
             builder.RegisterType<SalesOrderService>().As<ISalesOrderService>();
             builder.RegisterType<SalesOrderDetailService>().As<ISalesOrderDetailService>();
             builder.RegisterType<ModelDb>();
+            builder.RegisterType<SalesOrderDetailVM>().AsSelf();
             builder.RegisterType<RegisterViewModelValidator>().As<IValidator<RegisterViewModel>>();
-            builder.RegisterType<SalesOrderValidator>().As<IValidator<SalesOrders>>();
+
+            builder.RegisterType<SalesOrderDetailsValidator>().As<IValidator<SalesOrderDetailVM>>();
+            builder.RegisterType<ChequeServices>().As<IChequeService>();
 
             base.Load(builder);
         }

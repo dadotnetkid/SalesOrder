@@ -1,0 +1,54 @@
+﻿@model SalesOrderDetailVM
+
+<ejs-dialog id="add-edit-sales-order-detail" created="onCreated" allowDragging="true" target="#add-edit-order-detail-modal" header="@{ ViewContext.Writer.Write(Model?.SalesOrderDetails?.ProductName ??"New Order"); }"
+            width="400px"
+            showCloseIcon="true">
+    <e-content-template>
+        <form method="post"
+              data-ajax-url="@Url.Action("AddSalesOrderDetailPartial")"
+              data-ajax="true" ,
+              data-ajax-success="onSuccess">
+            <input type="hidden" asp-for="SalesOrderDetails.SalesOrderId" value="@Model?.SalesOrderId" />
+            <input type="hidden" asp-for="SalesOrderDetails.Id" value="@Model?.SalesOrderDetailId" />
+            <div class="row">
+                <div class="col-lg-12">
+                    <ejs-combobox id="productName" ejs-for="SalesOrderDetails.ProductName" dataSource="@Model?.Products">
+                        <e-combobox-fields text="ProductName" value="ProductName">
+
+                        </e-combobox-fields>
+                    </ejs-combobox>
+                    <span asp-validation-for="SalesOrderDetails.ProductName"></span>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-12">
+                    <ejs-numerictextbox id="qty" ejs-for="SalesOrderDetails.Qty" min="1" validateDecimalOnType="true" value="1"></ejs-numerictextbox>
+                    <span asp-validation-for="SalesOrderDetails.Qty"></span>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-12">
+                    <button type="submit" class="btn btn-success">Save</button>
+                </div>
+            </div>
+        </form>
+    </e-content-template>
+
+</ejs-dialog>
+
+<script>
+    function onCreated() {
+        this.show();
+
+    }
+</script>
+@if (Model?.isSuccess == true)
+{
+    <script>
+        $(document).ready(function () {
+            location.reload();
+        });
+    </script>
+}
+
+<ejs-scripts></ejs-scripts>

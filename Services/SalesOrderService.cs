@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Services.Helpers;
 using Services.Interfaces;
+using Services.VM;
 
 namespace Services
 {
@@ -56,6 +57,8 @@ namespace Services
             {
                 var item = db.SalesOrders.Find(salesOrders);
                 item.CustomerName = salesOrders.CustomerName;
+                item.AmountPaid = salesOrders.AmountPaid;
+
                 db.SaveChanges();
             }
             catch (Exception e)
@@ -66,7 +69,29 @@ namespace Services
             return salesOrders;
         }
 
-        public int Delete(int? salesOrderId)
+        public SalesOrders Update(SalesOrderVM vm)
+        {
+            try
+            {
+                var item = db.SalesOrders.FirstOrDefault(x => x.Id == vm.saleOrderId);
+                /*vm.SalesOrder = item;*/
+                item.CustomerName = vm.SalesOrder.CustomerName;
+                item.AmountPaid = vm.SalesOrder.AmountPaid;
+                if (vm.ChequeId != null)
+                    item.ChequeInSalesOrder.Add(db.ChequeInSalesOrder.Find(vm.ChequeId));
+                item.Status = "Tendered Transaction";
+                db.SaveChanges();
+                vm.SalesOrder = item;
+            }
+            catch (Exception e)
+            {
+
+            }
+
+            return vm.SalesOrder;
+        }
+
+        public int Delete(string salesOrderId)
         {
             try
             {
@@ -85,11 +110,12 @@ namespace Services
         {
             return Insert(new Data.Models.SalesOrders()
             {
+                Id = Guid.NewGuid().ToString(),
                 OrderNumber = new Random().Next(1, 1000000).ToString("d6"),
                 DateCreated = DateTime.Now,
                 SalesOrderDetails = new List<SalesOrderDetails>() { },
                 Status = "Initial Transaction",
-              CreatedBy= httpContextAccessor.HttpContext.User.GetUserId()
+                CreatedBy = httpContextAccessor.HttpContext.User.GetUserId()
             });
         }
 
