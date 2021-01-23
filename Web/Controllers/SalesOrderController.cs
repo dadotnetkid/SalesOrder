@@ -41,6 +41,7 @@ namespace Web.Controllers
         {
             return View();
         }
+        [Route("sales-order/detail/{salesOrderId?}")]
         public IActionResult SalesOrderDetailGridPartial(string salesOrderId)
         {
             if (salesOrderId == null)

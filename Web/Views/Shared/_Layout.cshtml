@@ -15,7 +15,7 @@
     <script src="~/lib/jquery/dist/jquery.js"></script>
     <script src="~/js/core/popper.min.js"></script>
     <script src="~/js/core/bootstrap.min.js"></script>
-
+    <script src="~/js/site.js"></script>
     <!--  Google Maps Plugin    -->
     <script src="~/js/plugins/chartjs.min.js"></script>
 
@@ -28,6 +28,7 @@
     <script src="~/lib/jquery-unobtrusive-ajax/jquery.unobtrusive-ajax.min.js"></script>
     <link rel="stylesheet" href="~/css/ej2/material.css" />
     <script src="~/js/ej2/ej2.min.js"></script>
+  
 </head>
 <body class="">
     <div class="wrapper ">
@@ -52,7 +53,9 @@
             <div class="panel-header panel-header-sm">
             </div>
             <div class="content">
+     
                 @RenderBody()
+                <div class="loading"><img src="~/icons/loading.gif" /></div>
             </div>
             <partial name="_footer.cshtml" />
             <div class="ps__rail-x" style="left: 0px; bottom: 0px;">

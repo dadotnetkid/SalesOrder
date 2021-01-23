@@ -18,11 +18,13 @@
                         <table class="table">
                             <thead>
                                 <tr>
-                                    @if (Model?.Status != "Tendered Transaction")
-                                    {
-                                        <th># <a href="#" onclick="showAddModal('@Model?.Id')">New</a></th>
-                                    }
-
+                                    <th>
+                                        #
+                                        @if (Model?.Status != "Tendered Transaction")
+                                        {
+                                            <a href="#" onclick="showAddModal('@Model?.Id')">New</a>
+                                        }
+                                    </th>
                                     <th>Order # </th>
                                     <th>Product Name</th>
                                     <th>QTY</th>
@@ -33,16 +35,13 @@
                                 @foreach (var i in Model?.SalesOrderDetails)
                                 {
                                     <tr>
-                                        @if (i.SalesOrder.Status != "Tendered Transaction")
-                                        {
-                                            <td>
-
+                                        <td>
+                                            @if (i.SalesOrder.Status != "Tendered Transaction")
+                                            {
                                                 <a href="#" onclick="showEditModal('@i.SalesOrderId', '@i.Id')">Edit</a>
                                                 <a href="@Url.Action("DeleteSalesOrderGridPartial", "SalesOrder", new {orderId = i.SalesOrderId, saledOrderDetailId = i.Id})">Delete</a>
-
-
-                                            </td>
-                                        }
+                                            }
+                                        </td>
                                         <td>@i.Sku</td>
                                         <td>@i.ProductName</td>
                                         <td>@i.Qty?.ToString("n2")</td>

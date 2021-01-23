@@ -1,0 +1,53 @@
+﻿@model List<Cheques>
+<div class="row">
+    <div class="col-lg-12">
+        <button class="btn btn-success" onclick="load()">Refresh</button>
+    </div>
+</div>
+<div class="row">
+    <div class="col-lg-12">
+        <table class="table">
+            <thead>
+            <tr>
+                <th>
+                    Account Name
+                </th>
+                <th>
+                    Account Number
+                </th>
+                <th>
+                    Cheque Number
+                </th>
+                <th>
+                    Amount
+                </th>
+                <th>
+                    Cheque Date
+                </th>
+            </tr>
+            </thead>
+            <tbody>
+            @foreach (var i in Model)
+            {
+                <tr>
+                    <td>
+                      @i.AccountName
+                    </td>
+                    <td>
+                        @i.AccountNumber
+                    </td>
+                    <td>
+                        @i.AccountNumber
+                    </td>
+                    <td>
+                        @i.Amount?.ToString("n2")
+                    </td>
+                    <td>
+                        @i.ChequeDate?.ToShortDateString()
+                    </td>
+                </tr>
+            }
+            </tbody>
+        </table>
+    </div>
+</div>

@@ -55,6 +55,12 @@ namespace Web.Controllers
             ViewData["isSuccess"] = true;
             return PartialView("AddEditChequePartial", model);
         }
+        [Route("cheques/delete-cheque/{chequeId?}")]
+        public IActionResult DeleteChequePartial(string chequeId)
+        {
+            chequeService.Delete(x => x.Id == chequeId);
+            return RedirectToAction("Index");
+        }
 
 
     }

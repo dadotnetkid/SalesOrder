@@ -17,7 +17,10 @@
     @foreach (var i in Model)
     {
         <tr>
-            <td><a href="#" onclick="showEdit('@i.Id')">Edit</a> <a href="#">Delete</a></td>
+            <td>
+                <a href="#" onclick="showEdit('@i.Id')">Edit</a>
+                <a href="#" onclick="deleteCheque('@i.Id')">Delete</a>
+            </td>
             <td>@i.AccountName</td>
             <td>@i.AccountNumber</td>
             <td>@i.ChequeNumber</td>
@@ -29,3 +32,17 @@
     }
     </tbody>
 </table>
+<script>
+    function deleteCheque(id) {
+        var c = confirm("Do you want delete this item");
+        if (c === true) {
+            $.ajax({
+                url: '@Url.Action("DeleteChequePartial")',
+                data: { chequeId: id },
+                success: function (html) {
+                    location.reload();
+                }
+            })
+        }
+    }
+</script>

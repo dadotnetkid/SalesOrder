@@ -2,3 +2,14 @@
 // for details on configuring this project to bundle and minify static web assets.
 
 // Write your JavaScript code.
+function showLoading() {
+    $('.loading').css({
+        visibility: 'visible'
+    })
+}
+
+function hideLoading() {
+    $('.loading').css({
+        visibility: 'hidden'
+    })
+}

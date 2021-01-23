@@ -95,3 +95,14 @@ body {
 .btn-onside-fab {
     margin: 0px !important;
 }
+.loading {
+    left: 50%;
+    top: 50%;
+    position: fixed;
+    z-index: 9999;
+    visibility: hidden;
+
+}
+.loading img {
+    height:60px;
+}

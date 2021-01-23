@@ -120,6 +120,7 @@ Configuration = configuration;
                     name: "default",
                     pattern: "{controller=SalesOrder}/{action=Index}/{id?}");
                 endpoints.MapRazorPages();
+                endpoints.MapControllers();
             });
         }
     }
