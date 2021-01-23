@@ -9,7 +9,7 @@ namespace Services.Interfaces
     public interface ISalesOrderService
     {
         public SalesOrders Find(Func<SalesOrders, bool> filter = null);
-        public List<SalesOrders> Orders(Func<SalesOrders, bool> filter = null);
+        public List<SalesOrders> Get(Func<SalesOrders, bool> filter = null);
         public SalesOrders Insert(SalesOrders salesOrders);
         public SalesOrders Update(SalesOrders salesOrders);
         public SalesOrders Update(SalesOrderVM vm) ;

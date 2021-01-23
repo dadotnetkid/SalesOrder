@@ -1,0 +1,48 @@
+﻿<div class="row">
+    <div class="col-lg-12">
+        <button class="btn btn-success" onclick="load()">Refresh</button>
+    </div>
+</div>
+<div class="row">
+    <div class="col-lg-12">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>
+                        Order Number
+                    </th>
+                    <th>
+                        Customer Name
+                    </th>
+                    <th>
+                        Amount Paid
+                    </th>
+                    <th>
+                        Date Created
+                    </th>
+
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var i in Model)
+                {
+                    <tr>
+                        <td>
+                            @i.OrderNumber
+                        </td>
+                        <td>
+                            @i.CustomerName
+                        </td>
+                        <td>
+                            @i.AmountPaid?.ToString("n2")
+                        </td>
+
+                        <td>
+                            @i.DateCreated?.ToShortDateString()
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

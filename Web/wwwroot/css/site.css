@@ -106,3 +106,19 @@ body {
 .loading img {
     height:60px;
 }
+
+.off-canvas-sidebar .sidebar-wrapper .user .info [data-toggle=collapse] ~ div > ul > li > a .sidebar-mini-icon, .off-canvas-sidebar .sidebar-wrapper > .nav [data-toggle=collapse] ~ div > ul > li > a .sidebar-mini-icon, .sidebar .sidebar-wrapper .user .info [data-toggle=collapse] ~ div > ul > li > a .sidebar-mini-icon, .sidebar .sidebar-wrapper > .nav [data-toggle=collapse] ~ div > ul > li > a .sidebar-mini-icon {
+    text-transform: uppercase;
+    width: 34px;
+    margin-right: 10px;
+    margin-left: 0;
+    font-size: 12px;
+    text-align: center;
+    line-height: 25px;
+    position: relative;
+    float: left;
+    z-index: 1;
+    display: inherit;
+    line-height: 24px;
+    color: hsla(0,0%,100%,.5);
+}

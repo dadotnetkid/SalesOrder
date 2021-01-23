@@ -19,7 +19,7 @@ namespace Web.Pages
         }
         public async Task<IViewComponentResult> InvokeAsync()
         {
-           var salesOrder= salesOrderService.Orders();
+           var salesOrder= salesOrderService.Get();
             return await Task.FromResult(View("~/views/SalesOrder/SalesOrderGrid.cshtml", salesOrder));
         }
     }

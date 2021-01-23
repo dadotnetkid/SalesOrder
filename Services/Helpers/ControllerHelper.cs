@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore.Internal;
 
 namespace Services.Helpers
 {
@@ -22,5 +24,12 @@ namespace Services.Helpers
 
             return "";
         }
+
+        public static string IsTreeColapse(this ViewContext context, params string[] controller)
+        {
+            string currentController = context.RouteData.Values["Controller"].ToString()?.ToLower();
+            return controller.Any(x => x.ToLower() == currentController) ? "show" : "";
+        }
+
     }
 }

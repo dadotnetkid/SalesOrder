@@ -28,7 +28,7 @@ namespace Services
             return db.SalesOrders.Include(x => x.SalesOrderDetails).FirstOrDefault();
         }
 
-        public List<SalesOrders> Orders(Func<SalesOrders, bool> filter = null)
+        public List<SalesOrders> Get(Func<SalesOrders, bool> filter = null)
         {
             if (filter != null)
                 return db.SalesOrders.Include(x => x.SalesOrderDetails).Where(filter).ToList();

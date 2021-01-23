@@ -13,10 +13,12 @@ namespace Web.Controllers
     public class ReportsController : Controller
     {
         private IChequeService chequeService;
+        private ISalesOrderService salesOrderService;
 
-        public ReportsController(IChequeService chequeService)
+        public ReportsController(IChequeService chequeService, ISalesOrderService salesOrderService)
         {
             this.chequeService = chequeService;
+            this.salesOrderService = salesOrderService;
         }
         public IActionResult Index()
         {
@@ -31,8 +33,18 @@ namespace Web.Controllers
 
         public IActionResult ChequesPartial()
         {
-            var res = chequeService.Get(x => EF.Functions.DateDiffDay( x.ChequeDate, DateTime.Now) >= 15);
+            var res = chequeService.Get(x => EF.Functions.DateDiffDay(x.ChequeDate, DateTime.Now) >= 15);
             return PartialView(res);
+        }
+
+        public IActionResult UnsettledOrders()
+        {
+            return View();
+        }
+        public IActionResult UnsettledOrdersPartial()
+        {
+            var model = salesOrderService.Get(x => EF.Functions.DateDiffDay(x.DateCreated, DateTime.Now) >= 15 && x.AmountPaid < x.SalesOrderDetails.Sum(m => (m.PurchaseAmount ?? 0)));
+            return PartialView(model);
         }
     }
 }

@@ -1,6 +1,6 @@
 ﻿<div class="sidebar-wrapper" id="sidebar-wrapper">
     <ul class="nav">
-      
+
         <li class="@ViewContext.IsMenuActive("Index","SalesOrder")">
             <a href="@Url.Action("Index","SalesOrder")">
                 <i class="now-ui-icons users_single-02"></i>
@@ -13,33 +13,31 @@
                 <p>Cheques</p>
             </a>
         </li>
-        <li class="@ViewContext.IsMenuActive("Cheques","Reports")">
-            <a href="@Url.Action("Cheques","Reports")">
-                <i class="now-ui-icons users_single-02"></i>
-                <p>Reports</p>
+     
+
+        <li>
+            <a data-toggle="collapse" href="#reports-nav" class="collapsed" aria-expanded="false">
+                <i class="now-ui-icons education_atom"></i>
+                <p>
+                    Reports <b class="caret"></b>
+                </p>
             </a>
+            <div class="collapse @ViewContext.IsTreeColapse("Reports")" id="reports-nav" style="">
+                <ul class="nav">
+                    <li class="@ViewContext.IsMenuActive("Cheques","Reports")">
+                        <a href="@Url.Action("Cheques","Reports")">
+                            <i class="now-ui-icons users_single-02"></i>
+                            <p>Cheques</p>
+                        </a>
+                    </li>
+                    <li class="@ViewContext.IsMenuActive("UnsettledOrders","Reports")">
+                        <a href="@Url.Action("UnsettledOrders","Reports")">
+                            <i class="now-ui-icons users_single-02"></i>
+                            <p>Unsettled Orders</p>
+                        </a>
+                    </li>
+                </ul>
+            </div>
         </li>
-        @*@if (User.IsInRole("Administrator"))
-        {
-            <li>
-                <a data-toggle="collapse" href="#maintenance">
-                    <i class="now-ui-icons design_bullet-list-67"></i>
-                    <p>
-                        Maintenance <b class="caret"></b>
-                    </p>
-                </a>
-                <div class="collapse " id="maintenance">
-                    <ul class="nav">
-                        <li>
-                            <a href="@Url.Action("Users","Maintenance")">
-                                <span class="now-ui-icons users_single-02"></span> Users
-                            </a>
-                        </li>
-
-                    </ul>
-                </div>
-            </li>
-        }*@
-
     </ul>
 </div>
