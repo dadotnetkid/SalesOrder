@@ -33,7 +33,7 @@ namespace Web.Controllers
 
         public IActionResult ChequesPartial()
         {
-            var res = chequeService.Get(x => EF.Functions.DateDiffDay(x.ChequeDate, DateTime.Now) >= 15);
+            var res = chequeService.DueCheck(15);
             return PartialView(res);
         }
 

@@ -1,12 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using Data.Models;
 using Microsoft.EntityFrameworkCore;
 using Services.Interfaces;
 
-namespace Services
+namespace Services.AutofacModules
 {
     public class SalesOrderDetailService : ISalesOrderDetailService
     {
@@ -45,6 +44,9 @@ namespace Services
             model.SellingPrice = product.SellingAmount;
             model.Id = Guid.NewGuid().ToString();
             db.SalesOrderDetails.Add(model);
+            var so = db.SalesOrders.FirstOrDefault(x => x.Id == model.SalesOrderId);
+            db.SaveChanges();
+            so.TotalAmount = db.SalesOrderDetails.Where(x => x.SalesOrderId == model.SalesOrderId).Sum(x => x.SubTotal ?? 0);
             db.SaveChanges();
             return model;
         }

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using Data.Models;
+using Services.AutofacModules;
 using Services.Interfaces;
 
 namespace Services.VM

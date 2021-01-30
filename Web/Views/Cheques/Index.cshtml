@@ -4,6 +4,7 @@
 <div class="row">
     <div class="col-lg-12">
         <div class="card">
+            <div class="card-header"><h5>Cheques</h5></div>
             <div class="card-body" id="cheque-grid">
                 <vc:cheque-grid filter="null"></vc:cheque-grid>
                 <div class="row">
@@ -44,9 +45,11 @@
         });
     }
 
-    onSuccessSaveCheque = function(html) {
-        $('.e-dlg-container.e-dlg-center-center').remove();
-        $('#dialog-container').html(html);
+    onSuccessSaveCheque = function (html) {
+        $('#AddEditChequeDialog').remove();
+        if (html.isSuccess !== true) {
+            $('#dialog-container').html(html);
+        }
         callback();
     }
 
@@ -58,4 +61,4 @@
             }
         })
     }
-</script>     
+</script>

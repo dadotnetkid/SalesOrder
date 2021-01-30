@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Data.Models
 {
@@ -7,7 +8,8 @@ namespace Data.Models
     {
         public Cheques()
         {
-            ChequeInSalesOrder = new HashSet<ChequeInSalesOrder>();
+
+            this.SalesOrderPayments = new HashSet<SalesOrderPayments>();
         }
 
         public string Id { get; set; }
@@ -21,7 +23,9 @@ namespace Data.Models
         public string BankAddress { get; set; }
         public string BankBranch { get; set; }
         public DateTime? DateCreated { get; set; }
+        [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
+        public string ChequeNumberAndAmount => this.ChequeNumber + " - " + this.Amount?.ToString("n2");
 
-        public virtual ICollection<ChequeInSalesOrder> ChequeInSalesOrder { get; set; }
+        public virtual ICollection<SalesOrderPayments> SalesOrderPayments { get; set; }
     }
 }

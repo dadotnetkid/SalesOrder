@@ -15,6 +15,12 @@ namespace Data.Models
         {
         }
 
+        public DbSet<TransformationMaps> TransformationMaps { get; set; }
+        public virtual DbSet<Inventory> Inventory{ get; set; }
+        public virtual DbSet<SalesOrderPayments> SalesOrderPayments { get; set; }
+        public virtual DbSet<Cheques> Cheques { get; set; }
+        public virtual DbSet<SalesOrderDetails> SalesOrderDetails { get; set; }
+        public virtual DbSet<SalesOrders> SalesOrders { get; set; }
         public virtual DbSet<AspNetRoleClaims> AspNetRoleClaims { get; set; }
         public virtual DbSet<AspNetRoles> AspNetRoles { get; set; }
         public virtual DbSet<AspNetUserClaims> AspNetUserClaims { get; set; }
@@ -22,10 +28,7 @@ namespace Data.Models
         public virtual DbSet<AspNetUserRoles> AspNetUserRoles { get; set; }
         public virtual DbSet<AspNetUserTokens> AspNetUserTokens { get; set; }
         public virtual DbSet<AspNetUsers> AspNetUsers { get; set; }
-        public virtual DbSet<ChequeInSalesOrder> ChequeInSalesOrder { get; set; }
-        public virtual DbSet<Cheques> Cheques { get; set; }
-        public virtual DbSet<SalesOrderDetails> SalesOrderDetails { get; set; }
-        public virtual DbSet<SalesOrders> SalesOrders { get; set; }
+
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -136,24 +139,7 @@ namespace Data.Models
                 entity.Property(e => e.UserName).HasMaxLength(256);
             });
 
-            modelBuilder.Entity<ChequeInSalesOrder>(entity =>
-            {
-                entity.HasKey(e => new { e.ChequeId, e.SalesOrderId });
 
-                entity.Property(e => e.ChequeId).HasMaxLength(128);
-
-                entity.Property(e => e.SalesOrderId).HasMaxLength(128);
-
-                entity.HasOne(d => d.Cheque)
-                    .WithMany(p => p.ChequeInSalesOrder)
-                    .HasForeignKey(d => d.ChequeId)
-                    .HasConstraintName("FK_ChequeInSalesOrder_Cheques");
-
-                entity.HasOne(d => d.SalesOrder)
-                    .WithMany(p => p.ChequeInSalesOrder)
-                    .HasForeignKey(d => d.SalesOrderId)
-                    .HasConstraintName("FK_ChequeInSalesOrder_SalesOrders");
-            });
 
             modelBuilder.Entity<Cheques>(entity =>
             {
@@ -210,6 +196,7 @@ namespace Data.Models
                 entity.Property(e => e.Id).HasMaxLength(128);
 
                 entity.Property(e => e.AmountPaid).HasColumnType("money");
+                entity.Property(e => e.Balance).HasComputedColumnSql("[TotalAmount]-[AmountPaid]");
 
                 entity.Property(e => e.CreatedBy).HasMaxLength(450);
 
@@ -225,6 +212,22 @@ namespace Data.Models
                     .WithMany(p => p.SalesOrders)
                     .HasForeignKey(d => d.CreatedBy)
                     .HasConstraintName("FK_SalesOrders_AspNetUsers");
+            });
+            modelBuilder.Entity<SalesOrderPayments>(entity =>
+            {
+
+                entity.HasOne(x => x.SalesOrders)
+                    .WithMany(x => x.SalesOrderPayments)
+                    .HasForeignKey(x => x.SalesOrderId);
+                entity.HasOne(x => x.Cheque)
+                    .WithMany(x => x.SalesOrderPayments)
+                    .HasForeignKey(x => x.ChequeId);
+            });
+            modelBuilder.Entity<Inventory>(entity =>
+            {
+                entity.HasOne(x => x.TransformedInventory)
+                    .WithMany(x => x.TransformedInventories)
+                    .HasForeignKey(x => x.ParentId);
             });
 
             OnModelCreatingPartial(modelBuilder);

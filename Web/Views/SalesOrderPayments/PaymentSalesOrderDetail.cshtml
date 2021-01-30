@@ -1,0 +1,35 @@
+﻿@model SalesOrderPaymentsVM
+
+<ejs-dialog id="dialog" width="500px" closeOnEscape="true" created="onShow" showCloseIcon="true" close="load" header="Payments">
+    <e-content-template>
+
+        <asp-form method-type="POST" action="@Url.Action("BulkSettlePaymentPartial")" on-success="onSuccess">
+            <error-alert errors="@ViewData["Errors"]"></error-alert>
+            <div class="row">
+                <div class="col-lg-12">
+
+                    <ejs-combobox dataSource="@Model.Customers" id="customers" ejs-for="CustomerId" placeholder="Customer" cssClass="e-outline">
+                        <e-combobox-fields value="Id" text="FullName"></e-combobox-fields>
+                    </ejs-combobox>
+                    <span asp-validation-for="CustomerId" class="text-danger"> </span>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-lg-12">
+                    <ejs-combobox dataSource="@Model.Cheques" id="cheque" ejs-for="ChequeId" placeholder="Cheque No" cssClass="e-outline" >
+                        <e-combobox-fields value="Id" text="ChequeNumber"></e-combobox-fields>
+                    </ejs-combobox>
+                    <span asp-validation-for="ChequeId" class="text-danger"> </span>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-12">
+                    <button type="submit" class="btn btn-success">Save</button>
+                </div>
+            </div>
+        </asp-form>
+    </e-content-template>
+</ejs-dialog>
+
+<ejs-scripts></ejs-scripts>

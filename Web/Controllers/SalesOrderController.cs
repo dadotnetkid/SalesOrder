@@ -10,6 +10,7 @@ using Services.VM;
 
 namespace Web.Controllers
 {
+    [Authorize]
     public class SalesOrderController : Controller
     {
         #region fields
@@ -104,7 +105,7 @@ namespace Web.Controllers
             return RedirectToAction("SalesOrderDetailGridPartial", new { salesOrderId = salesOrderId });
         }
 
-        public IActionResult CancelTransaction(int id)
+        public IActionResult CancelTransaction(string id)
         {
             salesOrderService.CancelTransaction(id);
             return RedirectToAction("Index");

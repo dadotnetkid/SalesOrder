@@ -1,0 +1,40 @@
+﻿@model List<TransformationMaps>
+<error-alert errors="@ViewData["Errors"]"></error-alert>
+<div class="row">
+    <div class="col-lg-12">
+        <button class="btn btn-success" onclick="showModalDetail('@Url.Action("TransformMapDetailPartial")',{},'#transform-detail-container','#dialog')">#New</button>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-lg-12">
+        <table class="table">
+            <thead>
+                <tr>
+                    <td>#</td>
+                    <th>Source Product</th>
+                    <th>Quantity</th>
+                    <th>Destination Product</th>
+                    <th>Tolerance Amount</th>
+                    <th>Is Percent</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var i in Model)
+                {
+                    <tr>
+                        <td>
+                            <a href="#" onclick="showModalDetail('@Url.Action("TransformMapDetailPartial")', { transformationMapId: '@i.Id' }, '#transform-detail-container', '#dialog')">Edit</a>
+                            <a href="#" onclick="deleteItem('@Url.Action("DeleteTransformMapPartial")', { transformationMapId: '@i.Id' }, function (xhr) { $('#transform-grid-container').html(xhr) })">Delete</a>
+                        </td>
+                        <th>@i.SourceProducts.ProductName</th>
+                        <td>@i.Quantity</td>
+                        <th>@i.DestinationProducts.ProductName</th>
+                        <td>@i.ToleranceAmount</td>
+                        <td><input type="checkbox" value="@i.IsPercent" /></td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

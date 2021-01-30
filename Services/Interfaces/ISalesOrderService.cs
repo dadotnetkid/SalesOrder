@@ -17,6 +17,6 @@ namespace Services.Interfaces
         public SalesOrders Initialize();
         public void TenderTransaction(int? saleOrderId);
         public void TenderTransaction(SalesOrders salesOrders);
-        public void CancelTransaction(int? saleOrderId);
+        public void CancelTransaction(string saleOrderId);
     }
 }

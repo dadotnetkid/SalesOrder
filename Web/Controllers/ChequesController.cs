@@ -50,10 +50,10 @@ namespace Web.Controllers
             }
             catch (Exception e)
             {
-
+                PartialView("AddEditChequePartial", model);
             }
             ViewData["isSuccess"] = true;
-            return PartialView("AddEditChequePartial", model);
+            return Json(new {isSuccess = true});
         }
         [Route("cheques/delete-cheque/{chequeId?}")]
         public IActionResult DeleteChequePartial(string chequeId)

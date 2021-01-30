@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using Data.Models;
+using Services.AutofacModules;
 using Services.Interfaces;
 
 namespace Services.VM
@@ -17,7 +18,7 @@ namespace Services.VM
         private SalesOrders salesOrder;
         private ICustomerService customerService;
         public bool isSuccess;
-        private List<Cheques> _cheques;
+        private IEnumerable<Cheques> _cheques;
         private string _saleOrderId;
 
         public SalesOrderVM()
@@ -40,7 +41,7 @@ namespace Services.VM
 
         public List<string> PaymentMethods => new List<string>() { "Cash", "Cheque" };
 
-        public List<Cheques> Cheques
+        public IEnumerable<Cheques> Cheques
         {
             get
             {

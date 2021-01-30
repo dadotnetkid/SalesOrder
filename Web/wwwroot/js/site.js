@@ -13,3 +13,23 @@ function hideLoading() {
         visibility: 'hidden'
     })
 }
+
+function onShow() {
+    this.show();
+}
+function showModalDetail(url, data, target, modalId) {
+    if ($(modalId).length) {
+        $(modalId).remove();
+    }
+    $.get(url,
+        data,
+        function (xhr) {
+            $(target).html(xhr);
+        });
+}
+
+function deleteItem(url, data, callback) {
+    var c = confirm("Do you want to delete this item");
+    if (c === true)
+        $.post(url, data, callback);
+}

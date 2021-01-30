@@ -11,6 +11,7 @@ namespace Data.Models
         public string ProductName { get; set; }
         public decimal? PurchaseAmount { get; set; }
         public decimal? SellingAmount { get; set; }
-        
+        public int ToleranceLevel { get; set; }
+        public bool CanExceed { get; set; }
     }
 }

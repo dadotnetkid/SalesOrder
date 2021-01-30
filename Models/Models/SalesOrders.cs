@@ -7,7 +7,6 @@ namespace Data.Models
     {
         public SalesOrders()
         {
-            ChequeInSalesOrder = new HashSet<ChequeInSalesOrder>();
             SalesOrderDetails = new HashSet<SalesOrderDetails>();
         }
 
@@ -15,13 +14,15 @@ namespace Data.Models
         public string OrderNumber { get; set; }
         public DateTime? DateCreated { get; set; }
         public string CreatedBy { get; set; }
+        public string CustomerId { get; set; }
         public string CustomerName { get; set; }
         public string Status { get; set; }
         public decimal? AmountPaid { get; set; }
         public string PaymentMethod { get; set; }
-
+        public decimal? TotalAmount { get; set; }
+        public decimal? Balance { get; set; }
         public virtual AspNetUsers CreatedByNavigation { get; set; }
-        public virtual ICollection<ChequeInSalesOrder> ChequeInSalesOrder { get; set; }
         public virtual ICollection<SalesOrderDetails> SalesOrderDetails { get; set; }
+        public virtual ICollection<SalesOrderPayments> SalesOrderPayments { get; set; }
     }
 }

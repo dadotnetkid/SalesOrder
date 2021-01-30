@@ -18,8 +18,8 @@
                     </ejs-combobox>
                 </div>
                 <div class="col-lg-12">
-                    <ejs-combobox id="CustomerName" ejs-for="SalesOrder.CustomerName" dataSource="Model?.Customers" placeholder="Select Customer" cssClass="e-outline">
-                        <e-combobox-fields text="FullName" value="FullName"></e-combobox-fields>
+                    <ejs-combobox id="CustomerName" ejs-for="SalesOrder.CustomerId" dataSource="Model?.Customers" placeholder="Select Customer" cssClass="e-outline">
+                        <e-combobox-fields text="FullName" value="Id"></e-combobox-fields>
                     </ejs-combobox>
                     <span asp-validation-for="SalesOrder.CustomerName"></span>
                 </div>

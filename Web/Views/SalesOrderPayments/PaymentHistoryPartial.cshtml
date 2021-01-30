@@ -1,0 +1,31 @@
+﻿@model System.Collections.Generic.List<Data.Models.SalesOrderPayments>
+
+<div class="row">
+    <div class="col-lg-12">
+        <table class="table">
+            <thead>
+            <tr>
+
+                <th>Order # </th>
+                <th>Customer Name</th>
+                <th>Cheque No</th>
+                <th>Amount Paid</th>
+                <th>Date Created</th>
+            </tr>
+            </thead>
+            <tbody>
+            @foreach (var i in Model)
+            {
+                <tr>
+                    <td>@i.SalesOrders?.OrderNumber</td>
+                    <th>@i.SalesOrders?.CustomerName</th>
+                    <td>@i.Cheque?.ChequeNumber</td>
+                    <td>@i.Amount</td>
+                    <td>@i.DateCreated</td>
+                </tr>
+            }
+            </tbody>
+
+        </table>
+    </div>
+</div>

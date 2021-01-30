@@ -1,24 +1,29 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
-using System.Text;
 using Data.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Services.Helpers;
 using Services.Interfaces;
+using Services.Repository;
 using Services.VM;
 
-namespace Services
+namespace Services.AutofacModules
 {
     public class SalesOrderService : ISalesOrderService
     {
         private ModelDb db;
         private IHttpContextAccessor httpContextAccessor;
+        private ICustomerService customerService;
+        private UnitOfWork unitOfWork;
 
-        public SalesOrderService(ModelDb db, IHttpContextAccessor httpContextAccessor)
+        public SalesOrderService(ModelDb db, UnitOfWork unitOfWork, ICustomerService customerService, IHttpContextAccessor httpContextAccessor)
         {
             this.db = db;
+            this.customerService = customerService;
+            this.unitOfWork = unitOfWork;
             this.httpContextAccessor = httpContextAccessor;
         }
         public SalesOrders Find(Func<SalesOrders, bool> filter = null)
@@ -73,19 +78,57 @@ namespace Services
         {
             try
             {
-                var item = db.SalesOrders.FirstOrDefault(x => x.Id == vm.saleOrderId);
-                /*vm.SalesOrder = item;*/
-                item.CustomerName = vm.SalesOrder.CustomerName;
-                item.AmountPaid = vm.SalesOrder.AmountPaid;
-                if (vm.ChequeId != null)
-                    item.ChequeInSalesOrder.Add(db.ChequeInSalesOrder.Find(vm.ChequeId));
+                var item = unitOfWork.SalesOrderRepo.Find(x => x.Id == vm.saleOrderId, "SalesOrderPayments,SalesOrderDetails");
+
+                var customer = customerService.Customers().FirstOrDefault(x => x.Id == vm.SalesOrder.CustomerId);
+
+                //get total amount
+                var totalAmount = item.SalesOrderDetails.Sum(x => x.SubTotal) ?? 0;
+
+
+                item.CustomerId = customer.Id;
+                item.CustomerName = customer.FullName;
+                item.AmountPaid = vm.SalesOrder.AmountPaid ?? 0;
                 item.Status = "Tendered Transaction";
-                db.SaveChanges();
+                //first is to clear just to be safe if cheque is already added
+                unitOfWork.SalesOrderPaymentRepo.Delete(x => x.SalesOrderId == item.Id);
+
+                foreach (var payment in item.SalesOrderPayments)
+                {
+                    unitOfWork.SalesOrderPaymentRepo.Insert(new SalesOrderPayments()
+                    {
+                        ChequeId = payment.ChequeId,
+                        Amount = payment.Amount,
+                        DateCreated = payment.DateCreated,
+                        SalesOrderId = payment.SalesOrderId
+                    });
+                }
+
+                unitOfWork.SalesOrderPaymentRepo.Insert(new SalesOrderPayments()
+                {
+                    ChequeId = vm.ChequeId,
+                    Amount = item.AmountPaid,
+                    DateCreated = DateTime.Now,
+                    SalesOrderId = item.Id,
+
+                });
+                if (!string.IsNullOrEmpty(vm.ChequeId))
+                {
+                    item.AmountPaid = totalAmount;
+                }
+
+                if (item.AmountPaid < totalAmount)
+                {
+                    item.Status = "Partially Paid Transaction";
+                }
+
+                unitOfWork.SalesOrderPaymentRepo.SaveChanges();
+                unitOfWork.SalesOrderRepo.SaveChanges();
                 vm.SalesOrder = item;
             }
             catch (Exception e)
             {
-
+                Debug.WriteLine(e.Message);
             }
 
             return vm.SalesOrder;
@@ -149,7 +192,7 @@ namespace Services
             }
         }
 
-        public void CancelTransaction(int? salesOrderId)
+        public void CancelTransaction(string salesOrderId)
         {
             try
             {

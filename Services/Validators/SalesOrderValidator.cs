@@ -17,7 +17,7 @@ namespace Services.Validators
         public SalesOrderValidator(IChequeService chequeService)
         {
             this.chequeService = chequeService;
-            RuleFor(x => x.SalesOrder.CustomerName)
+            RuleFor(x => x.SalesOrder.CustomerId)
           .NotNull()
              .WithMessage("Customer Name is required");
             RuleFor(x => x.SalesOrder.AmountPaid)
@@ -26,19 +26,14 @@ namespace Services.Validators
             RuleFor(x => x.ChequeId)
                 .Must(cheque)
                 .WithMessage("Invalid Cheque");
-
-
-
-
         }
 
         private bool cheque(SalesOrderVM vm, string chequeId)
         {
             if (vm.SalesOrder.PaymentMethod == "Cash")
                 return true;
-            if (string.IsNullOrEmpty(chequeId))
-                return false;
-            return true;
+            return !string.IsNullOrEmpty(chequeId);
+
         }
         /*  private bool cheque(SalesOrderVM vm, ICollection<ChequeInSalesOrder> arg2)
           {

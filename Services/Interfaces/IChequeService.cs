@@ -7,6 +7,6 @@ namespace Services.Interfaces
 {
     public interface IChequeService : IModelService<Cheques>
     {
-
+        IEnumerable<Cheques> DueCheck(int days);
     }
 }

@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using Autofac;
-using Microsoft.Extensions.DependencyInjection;
-
-namespace Services
+﻿namespace Services.AutofacModules
 {
     public static class ServicesHelper
     {

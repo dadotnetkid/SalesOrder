@@ -18,6 +18,7 @@ using Data;
 using Data.Models;
 using FluentValidation.AspNetCore;
 using Services;
+using Services.AutofacModules;
 using Services.VM;
 
 namespace Web

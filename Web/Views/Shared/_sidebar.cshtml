@@ -7,6 +7,24 @@
                 <p>Sales Order</p>
             </a>
         </li>
+        <li class="@ViewContext.IsMenuActive("Index","Transform")">
+            <a href="@Url.Action("Index","Transform")">
+                <i class="now-ui-icons users_single-02"></i>
+                <p>Transform</p>
+            </a>
+        </li>
+        <li class="@ViewContext.IsMenuActive("Index","SalesOrderPayments")">
+            <a href="@Url.Action("Index","SalesOrderPayments")">
+                <i class="now-ui-icons users_single-02"></i>
+                <p>Payments</p>
+            </a>
+        </li>
+        <li class="@ViewContext.IsMenuActive("PaymentHistory","SalesOrderPayments")">
+            <a href="@Url.Action("PaymentHistory","SalesOrderPayments")">
+                <i class="now-ui-icons users_single-02"></i>
+                <p>Payment History</p>
+            </a>
+        </li>
         <li class="@ViewContext.IsMenuActive("Index","Cheques")">
             <a href="@Url.Action("Index","Cheques")">
                 <i class="now-ui-icons users_single-02"></i>

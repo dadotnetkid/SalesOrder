@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using Data.Models;
 using Microsoft.EntityFrameworkCore;
@@ -16,22 +17,27 @@ namespace Services
         {
             this.db = db;
         }
-        public List<Cheques> Get(Func<Cheques, bool> filter = null, string includeProperties = null)
+
+      
+
+        public IEnumerable<Cheques> Get(Func<Cheques, bool> filter = null)
         {
             IQueryable<Cheques> cheques = db.Cheques;
-            if (includeProperties != null)
-                cheques = cheques.Include(includeProperties);
             if (filter != null)
                 return cheques.Where(filter).ToList();
             return cheques.ToList();
-
         }
 
-        public Cheques Find(Func<Cheques, bool> filter = null, string includeProperties = null)
+        public IQueryable<Cheques> Fetch(Expression<Func<Cheques, Cheques>> @select, Expression<Func<Cheques, bool>> filter = null)
+        {
+            throw new NotImplementedException();
+        }
+
+
+        public Cheques Find(Expression<Func<Cheques, bool>> filter = null)
         {
             IQueryable<Cheques> cheques = db.Cheques;
-            if (includeProperties != null)
-                cheques = cheques.Include(includeProperties);
+      
             if (filter != null)
                 return cheques.FirstOrDefault(filter);
             return cheques.FirstOrDefault();
@@ -57,6 +63,11 @@ namespace Services
             db.Cheques.Remove(db.Cheques.FirstOrDefault(filter));
             db.SaveChanges();
             return db.SaveChanges();
+        }
+
+        public IEnumerable<Cheques> DueCheck(int days)
+        {
+            return this.Get(x => EF.Functions.DateDiffDay(x.ChequeDate, DateTime.Now) >= days);
         }
     }
 }

@@ -1,0 +1,36 @@
+﻿<div class="row">
+    <div class="col-lg-12">
+        <div class="card">
+            <div class="card-header"><h5>Payment of Unsettled Orders</h5></div>
+            <div class="card-body" id="payment-container">
+
+            </div>
+        </div>
+
+    </div>
+</div>
+<script>
+    $(document).ready(function() {
+        load();
+    });
+
+    function load() {
+        $.get('@Url.Action("PaymentSalesOrderGridPartial")', function (xhr) {
+            $('#payment-container').html(xhr);
+        });
+    }
+
+</script>
+<script>
+    onSuccess = function (xhr) {
+        if (xhr.isSuccess === true) {
+            $('#dialog').remove();
+            load();
+        } else {
+            $('#dialog').remove();
+            $('#modal-container').html(xhr);
+        }
+
+  
+    }
+</script>

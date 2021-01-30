@@ -1,11 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using Data.Models;
 using Services.Interfaces;
 
-namespace Services
+namespace Services.AutofacModules
 {
     public class ProductService : IProductService
     {
@@ -17,7 +16,8 @@ namespace Services
                 SKU="TSH-MED-WHI-COT",
                 ProductName="T-shirt White Cotton",
                 PurchaseAmount=350M,
-                SellingAmount=360M
+                SellingAmount=360M,
+
             },
             new Products()
             {
@@ -49,7 +49,21 @@ namespace Services
                 SKU="BUT-NIK-ORI-JAP",
                 ProductName="The Original Japanese Butcher’s knife NIKUYA",
                 PurchaseAmount=1000.00M,
-                SellingAmount=1200M
+                SellingAmount=1200M,
+                ToleranceLevel=5,
+
+            },
+            new Products()
+            {
+                Id="905F0889-013E-4A0E-B522-5E8F8911E610",
+                SKU="1sac-s14-rice",
+                ProductName="1 SAC s14 Rice",
+                PurchaseAmount=1000.00M,
+                SellingAmount=1200M,
+                ToleranceLevel=1,
+                CanExceed=false,
+                
+
             }
         };
         public Products Find(Func<Products, bool> filter = null)
